@@ -1,0 +1,30 @@
+<!doctype html>
+<title>My Blogging Site</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<div class="page">
+  <h1>My Blogging Site</h1>
+  <div class="metanav">
+  {% if session.username %}
+  Logged in as {{ session.username }}
+  {% endif %}
+  <a href="{{ url_for('index') }}">Home</a>
+  {% if not session.username %}
+    <a href="{{ url_for('register') }}">Register</a>
+    <a href="{{ url_for('login') }}">Login</a>
+  {% else %}
+    <a href="{{ url_for('profile', username=session.username) }}">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  {% endif %}
+  </div>
+
+<!-- modificato io, la categoria permette il cambiamento del colore -->
+  {% for message in get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+  {% endfor %}
+
+  {% block body %}{% endblock %}
+</div>

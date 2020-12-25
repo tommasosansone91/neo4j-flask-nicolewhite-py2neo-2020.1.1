@@ -1,0 +1,15 @@
+conda activate env_udemy_py2neo_nicolewhite
+
+cd "C:\Users\Tommaso\Django rest framework\Udemy Django\Building_Web_Apps_Using_Flask_and_Neo4j_Working_Files\neo4j-flask-project"
+
+
+per aprire la python shell da Anaconda devi fare solo:
+python
+quit()
+
+from py2neo import Graph, Node, Relationship, NodeMatcher
+graph = Graph("bolt://localhost:7687", user="neo4j", password="Neo4j")
+
+
+http://localhost:7474/browser/
+
