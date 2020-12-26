@@ -100,7 +100,16 @@ def like_post(post_id):
 
 @app.route("/profile/<username>")
 def profile(username):
-    return "TODO"
+    user1 = User(session.get("username"))
+    user2 = User(username)
+    posts = user2.recent_posts(5)
+
+    similar = []
+
+    if user1.username == user2.username:
+        similar = user1.similar_users(3)
+
+    return render_template("profile.html", username=username, posts=posts)
 
 
 @app.route("/logout")

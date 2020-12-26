@@ -58,15 +58,11 @@ class User:
 
         
 
-        try:
-            tags = [x for x in tags.lower().split(", ")]
-            print("L'utente ha inserito i tag separati da virgola e spazio.")
-        except:
-            pass
-
+        tags = tags.replace(", ", ",")
+        tags = tags.replace(" ,", ",")
+            
         try:
             tags = [x for x in tags.lower().split(",")]
-            print("L'utente ha inserito i tag separati da virgola.")
         except:
             pass
 
@@ -92,6 +88,25 @@ class User:
         rel = Relationship(user, "LIKES", post)
         graph.merge(rel)
 
+    def recent_posts(self, n):
+        query = """
+        MATCH (user:User)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
+        WHERE user.username = $username
+        RETURN post, COLLECT(tag.name) AS tags
+        ORDER BY post.timestamp DESC LIMIT $n
+        """
+        return graph.run(query, username=self.username, n=n)
+
+    def similar_users(self, n):
+        query = """
+        MATCH (user1:User)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag:Tag),
+        MATCH (user2:User)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag)
+        WHERE user1.username = $username AND user1 <> user2
+        WITH user2, COLLECT(DISTINCT tag.name) AS tags, COUNT(DISTINCT tag.name) AS tag_count
+        ORDER BY tag_count DESC LIMIT %n
+        RETURN user2.username AS similar_user, tags
+        """
+        return graph.run(query, username=self.username, n=n)
 
 def todays_recent_posts(n):
     query = """

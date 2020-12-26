@@ -1,5 +1,0 @@
-ritorna tutto:
-MATCH (n) RETURN (n)
-
-
-MATCH (n) where id(n) = 2 DETACH DELETE n
