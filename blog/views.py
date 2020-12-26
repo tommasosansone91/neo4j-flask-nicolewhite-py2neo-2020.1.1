@@ -25,7 +25,7 @@ def register():
         if not user.register(password):
             flash("Esiste già un altro user con quell'username.", "error")
         else:
-            flash("Utente registrato con successo!")
+            flash("Utente registrato con successo!", "success")
             return redirect(url_for("login"))
 
     return render_template("register.html")
@@ -42,7 +42,7 @@ def login():
         if not user.verify_password(password):
             flash("username o password errati", "error")
         else:
-            flash("Login effettuato!")
+            flash("Login effettuato!", "success")
             session["username"] = user.username
             return redirect(url_for("index"))
 
@@ -73,7 +73,7 @@ def add_post():
 
     else:
         user.add_post(title, tags, text)
-        flash("Post pubblicato!") 
+        flash("Post pubblicato!", "success") 
 
     return redirect(url_for("index"))
 
@@ -84,7 +84,18 @@ def add_post():
 
 @app.route("/like_post/<post_id>")
 def like_post(post_id):
-    return "TODO"
+    username = session.get("username")
+
+    if not username:
+        flash("Per mettere like, prima devi loggarti.", "error")
+        return redirect(url_for("login"))
+
+    user = User(username)
+    user.like_post(post_id)
+    flash("Hai appena messo like.", "success")
+    return redirect(request.referrer)
+
+    
 
 
 @app.route("/profile/<username>")
@@ -94,4 +105,8 @@ def profile(username):
 
 @app.route("/logout")
 def logout():
-    return "TODO"
+    logged_out_user = session.get("username")
+    session.pop("username") 
+    # è un metodo dei dizionari: ritorna il valore della chiave indicata ed elimina chiave e valore dal dizionario
+    flash("%s hai eseguito il logout" % (logged_out_user), "success" )
+    return redirect(url_for("index"))

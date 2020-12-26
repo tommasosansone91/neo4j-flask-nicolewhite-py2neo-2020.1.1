@@ -70,7 +70,7 @@ class User:
         except:
             pass
 
-        
+
         print(tags)
         tags = set(tags) # evita che sia creato 2 volte lo stesso tag
 
@@ -83,7 +83,16 @@ class User:
             rel = Relationship(tag_node, "TAGGED", post)
             graph.create(rel)
 
-    
+    def like_post(self, post_id):
+        user = self.find()
+
+        matcher = NodeMatcher(graph)
+        post = matcher.match("Post", id=post_id).first()
+
+        rel = Relationship(user, "LIKES", post)
+        graph.merge(rel)
+
+
 def todays_recent_posts(n):
     query = """
     MATCH (user:User)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
