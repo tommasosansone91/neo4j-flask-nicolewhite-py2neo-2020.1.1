@@ -100,10 +100,10 @@ class User:
     def similar_users(self, n):
         query = """
         MATCH (user1:User)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag:Tag),
-        MATCH (user2:User)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag)
+              (user2:User)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag)
         WHERE user1.username = $username AND user1 <> user2
         WITH user2, COLLECT(DISTINCT tag.name) AS tags, COUNT(DISTINCT tag.name) AS tag_count
-        ORDER BY tag_count DESC LIMIT %n
+        ORDER BY tag_count DESC LIMIT $n
         RETURN user2.username AS similar_user, tags
         """
         return graph.run(query, username=self.username, n=n)
@@ -112,7 +112,7 @@ def todays_recent_posts(n):
     query = """
     MATCH (user:User)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
     WHERE post.date = $today
-    RETURN user.username, post, COLLECT(tag.name) AS tags
+    RETURN user.username AS username, post, COLLECT(tag.name) AS tags
     ORDER BY post.timestamp DESC LIMIT $n
     """
     

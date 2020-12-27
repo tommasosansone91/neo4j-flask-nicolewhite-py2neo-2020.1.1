@@ -23,9 +23,9 @@ def register():
         user = User(username)
 
         if not user.register(password):
-            flash("Esiste già un altro user con quell'username.", "error")
+            flash("Another user with the same username already exixst. Please chose another one.", "error")
         else:
-            flash("Utente registrato con successo!", "success")
+            flash("User registered!", "success")
             return redirect(url_for("login"))
 
     return render_template("register.html")
@@ -40,10 +40,10 @@ def login():
         user = User(username)
 
         if not user.verify_password(password):
-            flash("username o password errati", "error")
+            flash("Wrong username or password.", "error")
         else:
-            flash("Login effettuato!", "success")
             session["username"] = user.username
+            flash("You logged in as %s!" % session["username"], "success")            
             return redirect(url_for("index"))
 
     return render_template("login.html")
@@ -62,10 +62,10 @@ def add_post():
     matcher = NodeMatcher(graph)
 
     if not title or not tags or not text:
-        flash("Il post deve avere titolo, tags e testo.", "error")    
+        flash("The post must have title, tags and text. Please fill the blank form fields.", "error")    
 
     elif matcher.match('Post', text=text).first():
-        flash("Esiste già un altro post con questo identico testo, per favore cambia il testo.", "error")
+        flash("Another post has the same identical text you just typed in. Please change the text of your post.", "error")
 
     # elif matcher.match('Post', title=title).first():
     #     flash("Esiste già un altro post con questo identico titolo, per favore cambia il titolo.", "error")
@@ -73,7 +73,7 @@ def add_post():
 
     else:
         user.add_post(title, tags, text)
-        flash("Post pubblicato!", "success") 
+        flash("Post published!", "success") 
 
     return redirect(url_for("index"))
 
@@ -87,12 +87,12 @@ def like_post(post_id):
     username = session.get("username")
 
     if not username:
-        flash("Per mettere like, prima devi loggarti.", "error")
+        flash("You have to log in in order to like a post.", "error")
         return redirect(url_for("login"))
 
     user = User(username)
     user.like_post(post_id)
-    flash("Hai appena messo like.", "success")
+    flash("You just liked a post.", "success")
     return redirect(request.referrer)
 
     
@@ -117,5 +117,5 @@ def logout():
     logged_out_user = session.get("username")
     session.pop("username") 
     # è un metodo dei dizionari: ritorna il valore della chiave indicata ed elimina chiave e valore dal dizionario
-    flash("%s hai eseguito il logout" % (logged_out_user), "success" )
+    flash("%s logged out!" % (logged_out_user), "success" )
     return redirect(url_for("index"))
