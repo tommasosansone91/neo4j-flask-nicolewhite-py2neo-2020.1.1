@@ -39,7 +39,7 @@ py2neo==2020.1.1
 pycparser==2.20
 Pygments==2.7.3
 pyparsing==2.4.7
-pypiwin32==223
+# pypiwin32==223
 python-decouple==3.3
 pytz==2020.5
 # pywin32==300
