@@ -2,13 +2,17 @@ from py2neo import Graph, Node, Relationship, NodeMatcher
 from passlib.hash import bcrypt
 from datetime import datetime, timedelta
 import uuid
+import os
 
 from .auxiliary_functions import gregorian_calendar
 
 
 # graph = Graph()
+url = os.environ.get("GRAPHENEDB_URL", "http://localhost:7474")
 
-graph = Graph("bolt://localhost:7687", user="neo4j", password="Neo4j")
+graph = Graph(url + "/db/data/")
+
+# graph = Graph("bolt://localhost:7687", user="neo4j", password="Neo4j")
 
 class User:
 
@@ -54,6 +58,7 @@ class User:
 
         )    
  
+
 
         rel = Relationship(user, "PUBLISHED", post)
         graph.create(rel)
