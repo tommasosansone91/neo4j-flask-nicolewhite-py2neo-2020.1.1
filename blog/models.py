@@ -8,7 +8,7 @@ from .auxiliary_functions import gregorian_calendar
 
 
 
-url = os.environ.get("GRAPHENEDB_URL", "http://localhost:7474")
+url = os.environ.get("GRAPHENEDB_URL", "http://localhost:7687")
 
 graph = Graph(url + "/db/data/")
 
