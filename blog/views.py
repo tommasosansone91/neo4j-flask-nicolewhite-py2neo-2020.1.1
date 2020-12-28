@@ -10,8 +10,9 @@ app.secret_key = "['VpN.R#}e3e5(eB"
 
 @app.route("/")
 def index():
-    posts = todays_recent_posts(5)
-    return render_template("index.html", posts=posts)
+    recent_days = 5
+    posts = todays_recent_posts(recent_days)
+    return render_template("index.html", posts=posts, recent_days=recent_days)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -105,11 +106,14 @@ def profile(username):
     posts = user2.recent_posts(5)
 
     similar = []
+    common = {}
 
     if user1.username == user2.username:
         similar = user1.similar_users(3)
+    else:
+        common = user1.commonality_of_user(user2)      
 
-    return render_template("profile.html", username=username, posts=posts)
+    return render_template("profile.html", username=username, posts=posts, similar=similar, common=common)
 
 
 @app.route("/logout")
