@@ -9,6 +9,7 @@ from .auxiliary_functions import gregorian_calendar
 
 
 url = os.environ.get("GRAPHENEDB_URL", "http://localhost:7687")
+# il secondo argomento deve essere correttoanchese la carico su heroku
 
 graph = Graph(url + "/db/data/")
 
@@ -67,7 +68,7 @@ class User:
         gregorian_calendar(graph, time1=time_now, node1=post)
 
 
-        # ahndle tags separated by both ", " and ","
+        # handle tags separated by both ", " and ","
         tags = tags.replace(", ", ",")
         tags = tags.replace(" ,", ",")
             
