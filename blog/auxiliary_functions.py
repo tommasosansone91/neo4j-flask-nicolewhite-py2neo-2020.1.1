@@ -3,7 +3,8 @@ from py2neo import Graph, Node, Relationship
 from datetime import datetime
 
 
-# equivalente del gregorian calendar
+
+# similar to https://py2neo.org/v3/_modules/py2neo/ext/calendar/gregorian.html
 def gregorian_calendar(graph, time1=None, node1=None):
 
     if time1 is None:

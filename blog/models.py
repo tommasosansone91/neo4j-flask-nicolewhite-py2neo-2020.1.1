@@ -7,12 +7,14 @@ import os
 from .auxiliary_functions import gregorian_calendar
 
 
+#   enable to use on heroku, disable otherwise
 
 url = os.environ.get("GRAPHENEDB_URL", "http://localhost:7687")
-# il secondo argomento deve essere correttoanchese la carico su heroku
+#   il secondo argomento deve essere correttoanchese la carico su heroku
 
 graph = Graph(url + "/db/data/")
 
+#   enable to use locally, disable otherwise
 # graph = Graph("bolt://localhost:7687", user="neo4j", password="Neo4j")
 
 class User:
