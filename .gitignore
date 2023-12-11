@@ -3,6 +3,9 @@
 .comandi_utili.txt
 .log cose fatte neo4j-flask.txt
 
+# vs code
+.vscode
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
